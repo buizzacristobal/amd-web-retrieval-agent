@@ -111,8 +111,9 @@ amd-web-retrieval-agent/
 
 ### 1. Installation
 
+#### 🐧 On Linux / macOS:
 ```bash
-git clone https://github.com/your-username/amd-web-retrieval-agent.git
+git clone https://github.com/buizzacristobal/amd-web-retrieval-agent.git
 cd amd-web-retrieval-agent
 
 # Create virtual environment and install dependencies
@@ -120,6 +121,20 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+#### 🪟 On Windows (PowerShell or Command Prompt):
+```powershell
+git clone https://github.com/buizzacristobal/amd-web-retrieval-agent.git
+cd amd-web-retrieval-agent
+
+# Create virtual environment and activate
+python -m venv .venv
+.venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+*(Tip: On Windows you can also simply double-click `run_demo.bat` to automate the entire setup and launch).*
 
 ### 2. Environment Setup (Optional for Cloud Mode)
 

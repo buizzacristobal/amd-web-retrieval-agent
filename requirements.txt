@@ -1,0 +1,25 @@
+# AMD AI League - Match 4: Intelligent Web Information Retrieval
+# Core Dependencies for Local & Cloud Execution
+
+# Agent Schemas & Data Contracts
+pydantic>=2.7.0
+
+# Interactive Dashboard & Telemetry HUD
+streamlit>=1.35.0
+
+# DOM Parsing, Content Extraction & HTML Table Processing
+beautifulsoup4>=4.12.0
+html2text>=2024.2.26
+lxml>=5.1.0
+trafilatura>=1.8.0
+
+# Resilient Multi-Engine Web Search & Networking
+requests>=2.31.0
+httpx>=0.27.0
+duckduckgo-search>=5.3.0
+
+# Hybrid Lexical & Semantic Retrieval
+rank-bm25>=0.2.2
+
+# Hardware Profiling & System Telemetry
+psutil>=5.9.0

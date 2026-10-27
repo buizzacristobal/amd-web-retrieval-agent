@@ -1,0 +1,52 @@
+# AMD AI League - Match 4: Intelligent Web Information Retrieval
+# AMD ROCm Container Specification for Judges & Cloud Evaluators
+# Target Hardware: AMD Instinct MI300X, MI250, Radeon Pro / RX 7900 XTX (ROCm 6.2+)
+
+FROM rocm/dev-ubuntu-22.04:6.2
+
+# Set non-interactive mode and AMD ROCm environment variables
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    ROCM_PATH=/opt/rocm \
+    HIP_PLATFORM=amd \
+    HSA_OVERRIDE_GFX_VERSION=11.0.0 \
+    PATH="/opt/rocm/bin:/opt/rocm/llvm/bin:${PATH}" \
+    STREAMLIT_SERVER_PORT=8501 \
+    STREAMLIT_SERVER_HEADLESS=true \
+    STREAMLIT_SERVER_ENABLE_CORS=false \
+    STREAMLIT_SERVER_ENABLE_XSRF_PROTECTION=false
+
+# Install system utilities, python, and ROCm profiling tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-dev \
+    git \
+    curl \
+    ca-certificates \
+    pciutils \
+    rocm-smi \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory inside container
+WORKDIR /app
+
+# Copy dependency definition and install
+COPY requirements.txt /app/
+RUN pip3 install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip3 install --no-cache-dir -r requirements.txt
+
+# Copy source repository
+COPY . /app/
+
+# Expose Streamlit interactive UI port
+EXPOSE 8501
+
+# Healthcheck to verify agent accessibility
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8501/_stcore/health || exit 1
+
+# Launch the Streamlit dashboard on AMD Instinct / ROCm host
+# Evaluation Run Command:
+#   docker run --rm -it --device=/dev/kfd --device=/dev/dri --group-add video -p 8501:8501 amd-web-retrieval-agent:rocm
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
